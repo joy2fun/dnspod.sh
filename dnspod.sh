@@ -3,12 +3,17 @@
 token='ID,Token'
 domain=${1:-'css.js.cn'}
 sub_domain=${2:-'c'}
+my_ip=${3}
 echo "Domain: ${sub_domain}.${domain}"
 
 my_ip() {
-#	local html=$(curl -s -o- 'http://ip.qq.com/')
-#	echo $html | sed 's/.*value="\([0-9.]\+\)".*/\1/'
-	curl -s 'http://ip.taobao.com/service/getIpInfo2.php?ip=myip' | sed 's/.*"ip":"\([0-9.]\+\)".*/\1/'
+	[ -n "$my_ip" ] && {
+		echo $my_ip
+	} || {
+		#local html=$(curl -s -o- 'http://ip.qq.com/')
+		#echo $html | sed 's/.*value="\([0-9.]\+\)".*/\1/'
+		curl -s 'http://ip.taobao.com/service/getIpInfo2.php?ip=myip' | sed 's/.*"ip":"\([0-9.]\+\)".*/\1/'
+	}
 }
 
 api_call() {
