@@ -13,7 +13,6 @@ api_error() {
 	local key='"code":"1",'
 	[ "${1#*$key}" = "$1" ] && {
 		echo "error: $2"
-		echo "api response:"
 		echo $1
 		exit 1
 	}
