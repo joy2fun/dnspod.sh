@@ -1,8 +1,9 @@
-#!/bin/sh
-token='ID,Token'
+#!/bin/bash
+token=${DNSPOD_ID_TOKEN:-'ID,Token'}
 domain=${1:-'css.js.cn'}
 sub_domain=${2:-'c'}
-new_ip=${3:-$(curl -s 'http://ip.taobao.com/service/getIpInfo2.php?ip=myip' | sed 's/.*"ip":"\([0-9.]*\)".*/\1/')}
+ipinfo_io=${IPINFO_URL:-'ipinfo.io'}
+new_ip=${3:-$(curl -s "${ipinfo_io}" | grep '"ip"' | sed 's/.*"ip":[[:space:]]*"\([0-9.]*\)".*/\1/')}
 
 api_call() {
 	local param="login_token=${token}&format=json&domain=${domain}&${2}"
