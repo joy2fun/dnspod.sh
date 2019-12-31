@@ -19,11 +19,5 @@ $ ./dnspod.sh {domain} {sub_domain} [IP]
 
  - {domain}是顶级域名，{sub_domain}是二级域名
  - 如果需要更新顶级域名，{sub_domain}填写 `@`
- - [IP]如果为空，默认会使用 https://ipinfo.io/ 获取本机公网IP
-
-如果有 ipinfo.io 的 token，可以通过环境变量 `IPINFO_URL` 覆盖默认地址，如：
-
-```sh
-$ IPINFO_URL=ipinfo.io?token=your_token ./dnspod.sh {domain} {sub_domain}
-```
+ - [IP]如果为空，默认会使用 https://httpbin.org/get 获取本机公网IP
 

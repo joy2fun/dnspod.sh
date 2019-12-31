@@ -1,9 +1,10 @@
 #!/bin/bash
 token=${DNSPOD_ID_TOKEN:-'ID,Token'}
 domain=${1:-'css.js.cn'}
-sub_domain=${2:-'c'}
-ipinfo_io=${IPINFO_URL:-'ipinfo.io'}
-new_ip=${3:-$(curl -s "${ipinfo_io}" | grep '"ip"' | sed 's/.*"ip":[[:space:]]*"\([0-9.]*\)".*/\1/')}
+sub_domain=${2:-'*'}
+ip_url=${GETIP_URL:-'https://httpbin.org/get'}
+new_ip=$(curl -s $ip_url | grep -E -o "([0-9]+\.){3}[0-9]+" | head -n1 | cut -d' ' -f1)
+new_ip=${3:-$new_ip}
 
 api_call() {
 	local param="login_token=${token}&format=json&domain=${domain}&${2}"
@@ -33,4 +34,4 @@ old_ip=$(echo "$record" | sed 's/.*"value":"\([0-9.]*\)".*/\1/')
 echo "Changing A record(${sub_domain}.${domain}) from ${old_ip} to ${new_ip} ..."
 record_id=$(echo "$record" | sed 's/.*\[{"id":"\([0-9]*\)".*/\1/')
 result=$(api_call "Record.Ddns" "record_id=${record_id}&sub_domain=${sub_domain}&record_type=A&value=${new_ip}&record_line=%E9%BB%98%E8%AE%A4")
-api_error "$result" "Failed to update recode."
+api_error "$result" "Failed to update record."
